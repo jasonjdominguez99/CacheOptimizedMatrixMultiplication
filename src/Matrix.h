@@ -18,6 +18,8 @@ public:
 
     [[nodiscard]] static Matrix multiply_naive(const Matrix& m1, const Matrix& m2);
 
+    static void benchmark();
+
 private:
     explicit Matrix(const size_t numRows, const size_t numCols) :
         m_numRows(numRows),

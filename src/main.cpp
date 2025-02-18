@@ -20,4 +20,7 @@ int main()
 
     std::cout << "Naive: m1 x m2" << std::endl;
     std::cout << m3 << std::endl;
+
+    std::cout << "Benchmark" << std::endl;
+    Matrix::benchmark();
 }

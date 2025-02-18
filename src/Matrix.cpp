@@ -1,5 +1,6 @@
 #include "Matrix.h"
 
+#include <chrono>
 #include <iomanip>
 #include <iostream>
 #include <random>
@@ -51,6 +52,29 @@ Matrix Matrix::multiply_naive(const Matrix& m1, const Matrix& m2)
     }
 
     return result;
+}
+
+void Matrix::benchmark()
+{
+    // Benchmark function to compare multiplication performance
+    const size_t sizes[] = { 128, 256, 512, 1024 };
+
+    float min = 0.0f;
+    float max = 1.0f;
+
+    for (size_t size : sizes)
+    {
+        Matrix a = Matrix::random(size, size, min, max);
+        Matrix b = Matrix::random(size, size, min, max);
+
+        auto   start = std::chrono::high_resolution_clock::now();
+        Matrix naiveResult = multiply_naive(a, b);
+        auto   end = std::chrono::high_resolution_clock::now();
+        auto   naiveTime = std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count();
+
+        std::cout << "Matrix size: " << size << "x" << size << "\n";
+        std::cout << "Naive multiplication time: " << naiveTime << "ms\n";
+    }
 }
 
 std::ostream& operator<<(std::ostream& os, const Matrix& matrix)
