@@ -23,4 +23,6 @@ int main()
 
     std::cout << "Benchmark" << std::endl;
     Matrix::benchmark();
+
+    return 0;
 }
