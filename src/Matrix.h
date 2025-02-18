@@ -16,6 +16,8 @@ public:
     [[nodiscard]] size_t numCols() const noexcept { return m_numCols; };
     [[nodiscard]] float  valueAt(const size_t i, const size_t j) const { return m_data[i * m_numCols + j]; };
 
+    [[nodiscard]] static Matrix multiply_naive(const Matrix& m1, const Matrix& m2);
+
 private:
     explicit Matrix(const size_t numRows, const size_t numCols) :
         m_numRows(numRows),

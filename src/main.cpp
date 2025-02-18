@@ -15,4 +15,9 @@ int main()
 
     std::cout << "Matrix m2" << std::endl;
     std::cout << m2 << std::endl;
+
+    Matrix m3 = Matrix::multiply_naive(m1, m2);
+
+    std::cout << "Naive: m1 x m2" << std::endl;
+    std::cout << m3 << std::endl;
 }
