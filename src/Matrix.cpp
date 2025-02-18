@@ -4,20 +4,27 @@
 #include <iostream>
 #include <random>
 
-Matrix::Matrix(const size_t numRows, const size_t numCols) :
-    m_numRows(numRows),
-    m_numCols(numCols),
-    m_data(numRows * numCols)
+Matrix Matrix::zeros(const size_t numRows, const size_t numCols)
 {
-    // Initialize with random values between 0.0 - 1.0
+    return Matrix(numRows, numCols);
+}
+
+Matrix Matrix::random(const size_t numRows, const size_t numCols, const float min, const float max)
+{
+    Matrix m(numRows, numCols);
+
+    // Initialize with random values between min & max
     std::random_device                    rd;
     std::mt19937                          gen(rd());
-    std::uniform_real_distribution<float> dist(0.0f, 1.0f);
+    std::uniform_real_distribution<float> dist(min, max);
 
-    for (float& val : m_data)
+    std::vector<float>& data = m.data();
+    for (float& val : data)
     {
         val = dist(gen);
     }
+
+    return m;
 }
 
 std::ostream& operator<<(std::ostream& os, const Matrix& matrix)
