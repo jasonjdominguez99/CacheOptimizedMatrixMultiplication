@@ -17,6 +17,7 @@ public:
     [[nodiscard]] float  valueAt(const size_t i, const size_t j) const { return m_data[i * m_numCols + j]; };
 
     [[nodiscard]] static Matrix multiply_naive(const Matrix& m1, const Matrix& m2);
+    [[nodiscard]] static Matrix multiply_reordered(const Matrix& m1, const Matrix& m2);
 
     static void benchmark();
 

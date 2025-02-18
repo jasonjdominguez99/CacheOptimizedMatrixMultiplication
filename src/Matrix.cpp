@@ -54,16 +54,43 @@ Matrix Matrix::multiply_naive(const Matrix& m1, const Matrix& m2)
     return result;
 }
 
+Matrix Matrix::multiply_reordered(const Matrix& m1, const Matrix& m2)
+{
+    if (m1.numCols() != m2.numRows())
+    {
+        throw std::runtime_error("Matrix sizes are not compatible for multiplication");
+    }
+
+    Matrix              result(m1.numRows(), m2.numCols());
+    std::vector<float>& resultData = result.data();
+
+    for (size_t i = 0; i < m1.numRows(); ++i)
+    {
+        for (size_t k = 0; k < m1.numCols(); ++k)
+        {
+            const float value = m1.valueAt(i, k);
+            for (size_t j = 0; j < m2.numCols(); ++j)
+            {
+                resultData[i * result.numCols() + j] += value * m2.valueAt(k, j);
+            }
+        }
+    }
+
+    return result;
+}
+
 void Matrix::benchmark()
 {
     // Benchmark function to compare multiplication performance
-    const size_t sizes[] = { 128, 256, 512, 1024 };
+    const size_t sizes[] = { 128, 256, 512, 1024, 2048 };
 
     float min = 0.0f;
     float max = 1.0f;
 
     for (size_t size : sizes)
     {
+        std::cout << "Matrix size: " << size << "x" << size << "\n";
+
         Matrix a = Matrix::random(size, size, min, max);
         Matrix b = Matrix::random(size, size, min, max);
 
@@ -72,9 +99,18 @@ void Matrix::benchmark()
         auto   end = std::chrono::high_resolution_clock::now();
         auto   naiveTime = std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count();
 
-        std::cout << "Matrix size: " << size << "x" << size << "\n";
         std::cout << "Naive multiplication time: " << naiveTime << "ms\n";
+
+        start = std::chrono::high_resolution_clock::now();
+        Matrix ReorderedResult = multiply_reordered(a, b);
+        end = std::chrono::high_resolution_clock::now();
+        auto reorderedTime = std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count();
+
+        std::cout << "Reordered multiplication time: " << reorderedTime << "ms\n";
+        std::cout << "Speedup: " << static_cast<float>(naiveTime) / reorderedTime << "x\n\n";
     }
+
+    std::cout << std::endl;
 }
 
 std::ostream& operator<<(std::ostream& os, const Matrix& matrix)
