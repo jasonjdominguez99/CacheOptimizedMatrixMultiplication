@@ -11,4 +11,5 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 # Add all the source files for your project
 add_executable(CacheOptimizedMatrixMultiplication
     main.cpp
+    Matrix.cpp
 )
